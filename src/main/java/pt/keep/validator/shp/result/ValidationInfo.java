@@ -1,6 +1,4 @@
-package pt.keep.validator.result;
-
-import java.util.List;
+package pt.keep.validator.shp.result;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;

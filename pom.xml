@@ -24,7 +24,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>pt.keep.validator.ShapefileProcessor</mainClass>
+							<mainClass>pt.keep.validator.shp.ShapefileProcessor</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>

@@ -1,9 +1,8 @@
-package pt.keep.validator;
+package pt.keep.validator.shp;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -17,26 +16,32 @@ import org.nocrala.tools.gis.data.esri.shapefile.ShapeFileReader;
 import org.nocrala.tools.gis.data.esri.shapefile.header.ShapeFileHeader;
 import org.nocrala.tools.gis.data.esri.shapefile.shape.AbstractShape;
 
-import pt.keep.validator.result.FeaturesInfo;
-import pt.keep.validator.result.FileInfo;
-import pt.keep.validator.result.IdentificationInfo;
-import pt.keep.validator.result.Result;
-import pt.keep.validator.result.RecordStats;
-import pt.keep.validator.result.ValidationInfo;
+import pt.keep.validator.shp.result.FeaturesInfo;
+import pt.keep.validator.shp.result.FileInfo;
+import pt.keep.validator.shp.result.IdentificationInfo;
+import pt.keep.validator.shp.result.RecordStats;
+import pt.keep.validator.shp.result.Result;
+import pt.keep.validator.shp.result.ValidationInfo;
 
 public class ShapefileProcessor {
 	private static String version = "1.0";
 
-	public void run(File f) {
+	public String getVersion(){
+		return version;
+	}
+	public String run(File f) {
 		try {
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			Result res = process(f);
 			JAXBContext jaxbContext = JAXBContext.newInstance(Result.class);
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-			jaxbMarshaller.marshal(res, System.out);
+			jaxbMarshaller.marshal(res, bos);
+			return bos.toString("UTF-8");
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
+		return null;
 	}
 
 	public Result process(File f) {
@@ -200,7 +205,10 @@ public class ShapefileProcessor {
 				System.out.println("File doesn't exist");
 				System.exit(0);
 			}
-			sfp.run(f);
+			String toolOutput = sfp.run(f);
+			if(toolOutput!=null){
+				System.out.println(toolOutput);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
